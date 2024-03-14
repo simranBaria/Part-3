@@ -14,7 +14,7 @@ public class Villager : MonoBehaviour
 
     protected Vector2 destination;
     Vector2 movement;
-    float speed = 3;
+    protected float speed = 3;
 
     void Start()
     {
