@@ -9,6 +9,12 @@ public class CharacterControl : MonoBehaviour
 {
     public static Villager SelectedVillager { get; private set; }
     public TextMeshProUGUI selectedText;
+    public static CharacterControl Instance;
+
+    public void Start()
+    {
+        Instance = this;
+    }
 
     public static void SetSelectedVillager(Villager villager)
     {
@@ -18,11 +24,12 @@ public class CharacterControl : MonoBehaviour
         }
         SelectedVillager = villager;
         SelectedVillager.Selected(true);
+        Instance.selectedText.text = "Selected: " + villager.ToString();
     }
 
     private void Update()
     {
-        if (SelectedVillager != null) selectedText.SetText("Selected: " + SelectedVillager.name);
-        else selectedText.SetText("Selected: None");
+        /*if (SelectedVillager != null) selectedText.SetText("Selected: " + SelectedVillager.name);
+        else selectedText.SetText("Selected: None");*/
     }
 }
