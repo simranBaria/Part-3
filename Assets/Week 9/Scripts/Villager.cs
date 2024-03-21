@@ -8,12 +8,12 @@ public class Villager : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
 
-    bool clickingOnSelf;
+    //bool clickingOnSelf;
     bool isSelected;
     public GameObject highlight;
 
     protected Vector2 destination;
-    Vector2 movement;
+    public Vector2 movement;
     protected float speed = 3;
 
     void Start()
@@ -35,24 +35,14 @@ public class Villager : MonoBehaviour
         clickingOnSelf = true;
     }*/
 
-    private void OnMouseUp()
+    /*private void OnMouseUp()
     {
         clickingOnSelf = false;
-    }
+    }*/
 
     private void FixedUpdate()
     {
         movement = destination - (Vector2)transform.position;
-
-        //flip the x direction of the game object & children to face the direction we're walking
-        if(movement.x > 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else if (movement.x < 0)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
 
         //stop moving if we're close enough to the target
         if (movement.magnitude < 0.1)
@@ -67,7 +57,7 @@ public class Villager : MonoBehaviour
     protected virtual void Update()
     {
         //left click: move to the click location
-        if (Input.GetMouseButtonDown(0) && isSelected && !clickingOnSelf)
+        if (Input.GetMouseButtonDown(0) && isSelected)
         {
             destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }

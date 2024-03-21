@@ -41,9 +41,4 @@ public class Thief : Villager
     {
         return ChestType.Thief;
     }
-
-    public override string ToString()
-    {
-        return "ur gay";
-    }
 }
