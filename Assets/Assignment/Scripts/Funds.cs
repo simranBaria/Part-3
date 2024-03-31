@@ -6,31 +6,32 @@ using TMPro;
 public class Funds : MonoBehaviour
 {
     public TextMeshProUGUI display;
-    private float funds = 0;
+    private static float funds;
+    static string fundsText = "000,000.000";
+    public static Funds Instance;
 
     private void Start()
     {
-        UpdateFunds(5420.9f);
+        funds = 0;
+        Instance = this;
     }
 
     // Method to update current funds
-    public void UpdateFunds(float value)
+    public static void UpdateFunds(float value)
     {
         funds += value;
         UpdateText();
     }
 
     // Method to update the display text
-    private void UpdateText()
+    private static void UpdateText()
     {
         // Format for currency
-        string text = string.Format("{0:C}", funds);
-        text = text.Substring(1);
+        string formatted = string.Format("{0:N}", funds);
 
         // Add any zeroes needed at the start
         string zeroes = "000,000.00";
-        text = zeroes.Substring(0, zeroes.Length - text.Length) + text;
-
-        display.text = text;
+        fundsText = zeroes.Substring(0, zeroes.Length - formatted.Length) + formatted;
+        Instance.display.text = fundsText;
     }
 }
