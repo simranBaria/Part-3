@@ -316,7 +316,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 534506884}
   - {fileID: 366371774}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -334,9 +333,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 516001524}
   standName: Spam Musubi
-  initialProfit: 3
-  initialProfitCost: 5
-  profitGrowthRate: 1.14
+  profitCost: 0
+  initialProfit: 0.3
+  initialProfitCost: 0.4
+  profitGrowthRate: 1.1
   profitButton: {fileID: 1904579880}
   profitCostText: {fileID: 1176158488}
   maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
@@ -351,8 +351,14 @@ MonoBehaviour:
   maxTimeLevel: 25
   timeButton: {fileID: 1946201834}
   timeCostText: {fileID: 1955428212}
-  initialTimeCost: 7
-  timeGrowthRate: 1.28
+  initialTimeCost: 0.75
+  timeGrowthRate: 1.13
+  UIDisplay: {fileID: 534506883}
+  food: {fileID: 1186014919}
+  buyButton: {fileID: 1982416400}
+  buyText: {fileID: 2026342662}
+  buyCost: 0.1
+  animator: {fileID: 366371776}
 --- !u!1 &56733746
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,11 +437,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 56733749}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 201943174}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: BuyStand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &56733749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,7 +775,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &110741277
 MonoBehaviour:
@@ -806,12 +824,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -1024,8 +1042,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.443, y: 0.100000024}
-  m_SizeDelta: {x: -1.1600001, y: 0.54}
+  m_AnchoredPosition: {x: 0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &159885784
 GameObject:
@@ -1037,6 +1055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 159885785}
   - component: {fileID: 159885786}
+  - component: {fileID: 159885787}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -1053,11 +1072,12 @@ Transform:
   m_GameObject: {fileID: 159885784}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.021, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 884958091}
+  - {fileID: 1640948879}
   m_Father: {fileID: 1285945359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &159885786
@@ -1112,6 +1132,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &159885787
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159885784}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a01163826bac46439bf5c6ff7334211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &162399495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,11 +1185,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 688963412}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.000000029802322}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &162399497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,7 +1210,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0s
+  m_text: 0.00s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
   m_sharedMaterial: {fileID: -1415788517794090526, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
@@ -1196,12 +1237,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -1232,7 +1273,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1403,7 +1444,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 188084335}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 337559142}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: UpgradeTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &188084335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,6 +1504,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 201943173}
+  - component: {fileID: 201943174}
   m_Layer: 0
   m_Name: Poke Stand
   m_TagString: Untagged
@@ -1472,9 +1526,48 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1487129960}
-  - {fileID: 711026316}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201943174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201943172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caab459a35ab144eeb56ea05d8d4ab6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 1920765348}
+  standName: Poke
+  profitCost: 0
+  initialProfit: 4.3
+  initialProfitCost: 10
+  profitGrowthRate: 1.16
+  profitButton: {fileID: 284290856}
+  profitCostText: {fileID: 1162891355}
+  maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
+  maxColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  profitText: {fileID: 1078132952}
+  profitLevel: 1
+  maxProfitLevel: 25
+  initialTime: 15
+  slider: {fileID: 1388996189}
+  timeText: {fileID: 1620254975}
+  timeLevel: 1
+  maxTimeLevel: 25
+  timeButton: {fileID: 1796452674}
+  timeCostText: {fileID: 318653241}
+  initialTimeCost: 15.75
+  timeGrowthRate: 1.19
+  UIDisplay: {fileID: 711026315}
+  food: {fileID: 1837435647}
+  buyButton: {fileID: 56733748}
+  buyText: {fileID: 1886747388}
+  buyCost: 17
+  animator: {fileID: 1487129962}
 --- !u!1 &216230334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +1603,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216230336
 MonoBehaviour:
@@ -1559,12 +1652,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -1812,9 +1905,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 40
+  m_fontSizeMax: 55
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2075,7 +2168,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 284290857}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 201943174}
+        m_TargetAssemblyTypeName: Stand, Assembly-CSharp
+        m_MethodName: UpgradeProfit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &284290857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2146,11 +2251,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1296003709}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.00000047683716, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &303211797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,7 +2276,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0s
+  m_text: 0.00s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
   m_sharedMaterial: {fileID: -1415788517794090526, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
@@ -2198,12 +2303,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -2234,7 +2339,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2283,7 +2388,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &318653241
 MonoBehaviour:
@@ -2332,12 +2437,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2414,11 +2519,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1487394774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.00000011920929, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &335231199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2439,7 +2544,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0s
+  m_text: 0.00s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
   m_sharedMaterial: {fileID: -1415788517794090526, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
@@ -2466,12 +2571,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -2502,7 +2607,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2525,6 +2630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 337559141}
+  - component: {fileID: 337559142}
   m_Layer: 0
   m_Name: Huli-Huli Chicken Stand
   m_TagString: Untagged
@@ -2546,9 +2652,48 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 955572012}
-  - {fileID: 1028781897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &337559142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337559140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caab459a35ab144eeb56ea05d8d4ab6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 978107553}
+  standName: Huli-Huli Chicken
+  profitCost: 0
+  initialProfit: 18.25
+  initialProfitCost: 50.75
+  profitGrowthRate: 1.19
+  profitButton: {fileID: 1021465084}
+  profitCostText: {fileID: 1236665422}
+  maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
+  maxColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  profitText: {fileID: 1739331274}
+  profitLevel: 1
+  maxProfitLevel: 25
+  initialTime: 20
+  slider: {fileID: 84366953}
+  timeText: {fileID: 335231199}
+  timeLevel: 1
+  maxTimeLevel: 25
+  timeButton: {fileID: 188084334}
+  timeCostText: {fileID: 1539975635}
+  initialTimeCost: 54.8
+  timeGrowthRate: 1.22
+  UIDisplay: {fileID: 1028781896}
+  food: {fileID: 2006466913}
+  buyButton: {fileID: 1180666091}
+  buyText: {fileID: 1562962416}
+  buyCost: 84
+  animator: {fileID: 955572014}
 --- !u!1 &366371773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,6 +2704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 366371774}
   - component: {fileID: 366371775}
+  - component: {fileID: 366371776}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -2580,6 +2726,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1186014920}
+  - {fileID: 534506884}
   m_Father: {fileID: 44254457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &366371775
@@ -2634,6 +2781,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &366371776
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366371773}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a01163826bac46439bf5c6ff7334211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &389843813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,11 +2880,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 389843816}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1285945360}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: BuyStand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &389843816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3015,9 +3195,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 40
+  m_fontSizeMax: 55
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -3144,7 +3324,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 421884346}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1185959137}
+        m_TargetAssemblyTypeName: Stand, Assembly-CSharp
+        m_MethodName: UpgradeProfit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &421884346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3193,6 +3385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 437314207}
   - component: {fileID: 437314208}
+  - component: {fileID: 437314209}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -3209,11 +3402,12 @@ Transform:
   m_GameObject: {fileID: 437314206}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.004, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1347266829}
+  - {fileID: 901841936}
   m_Father: {fileID: 2011291761}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &437314208
@@ -3268,6 +3462,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &437314209
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437314206}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a01163826bac46439bf5c6ff7334211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &445830263
 GameObject:
   m_ObjectHideFlags: 0
@@ -3300,11 +3515,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1077055129}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.000000029802322}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &445830265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3325,7 +3540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0s
+  m_text: 0.00s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
   m_sharedMaterial: {fileID: -1415788517794090526, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
@@ -3352,12 +3567,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -3388,7 +3603,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3689,8 +3904,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.336, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &516001522
 GameObject:
@@ -3893,7 +4108,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534506883}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3902,7 +4117,7 @@ RectTransform:
   - {fileID: 847730135}
   - {fileID: 688963412}
   - {fileID: 1292801570}
-  m_Father: {fileID: 44254457}
+  m_Father: {fileID: 366371774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4246,11 +4461,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 599692582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1185959137}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: BuyStand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &599692582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4398,8 +4625,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.443, y: 0.100000024}
-  m_SizeDelta: {x: -1.1600001, y: 0.54}
+  m_AnchoredPosition: {x: 0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &690700387
 GameObject:
@@ -4436,7 +4663,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &690700389
 MonoBehaviour:
@@ -4485,12 +4712,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -4561,7 +4788,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711026315}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4570,7 +4797,7 @@ RectTransform:
   - {fileID: 1638245757}
   - {fileID: 1094344213}
   - {fileID: 1388996188}
-  m_Father: {fileID: 201943173}
+  m_Father: {fileID: 1487129960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4872,7 +5099,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 770374162}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1285945360}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: UpgradeTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &770374162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4943,11 +5182,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 847730135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.000000029802322}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &776334292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4995,12 +5234,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -5031,7 +5270,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5323,7 +5562,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 839201837}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5332,11 +5571,11 @@ RectTransform:
   - {fileID: 1397943229}
   - {fileID: 1077055129}
   - {fileID: 996583599}
-  m_Father: {fileID: 1185959136}
+  m_Father: {fileID: 1143828976}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.8, y: 0.1795}
+  m_AnchoredPosition: {x: 0, y: 0.1795}
   m_SizeDelta: {x: 2, y: 2.859}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &839201839
@@ -5436,8 +5675,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.336, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &859806661
 GameObject:
@@ -5823,7 +6062,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 894819000}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2011291762}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: UpgradeTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &894819000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5888,7 +6139,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901841935}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5897,7 +6148,7 @@ RectTransform:
   - {fileID: 1660464866}
   - {fileID: 1296003709}
   - {fileID: 405030013}
-  m_Father: {fileID: 2011291761}
+  m_Father: {fileID: 437314207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6148,6 +6399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 955572012}
   - component: {fileID: 955572013}
+  - component: {fileID: 955572014}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -6164,11 +6416,12 @@ Transform:
   m_GameObject: {fileID: 955572011}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.059, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2006466914}
+  - {fileID: 1028781897}
   m_Father: {fileID: 337559141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &955572013
@@ -6223,6 +6476,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &955572014
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955572011}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a01163826bac46439bf5c6ff7334211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &959337707
 GameObject:
   m_ObjectHideFlags: 0
@@ -6484,8 +6758,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1261963927}
   standName: Popoki Cafe
-  initialProfit: 1
-  initialProfitCost: 1
+  profitCost: 0
+  initialProfit: 0.1
+  initialProfitCost: 0.25
   profitGrowthRate: 1.07
   profitButton: {fileID: 1501845733}
   profitCostText: {fileID: 261254660}
@@ -6493,7 +6768,7 @@ MonoBehaviour:
   maxColour: {r: 0.7137255, g: 0.45098042, b: 0.28627452, a: 1}
   profitText: {fileID: 1997858273}
   profitLevel: 1
-  maxProfitLevel: 25
+  maxProfitLevel: 100
   animator: {fileID: 979098342}
 --- !u!50 &979098340
 Rigidbody2D:
@@ -6918,7 +7193,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1021465085}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 337559142}
+        m_TargetAssemblyTypeName: Stand, Assembly-CSharp
+        m_MethodName: UpgradeProfit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1021465085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6983,7 +7270,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028781896}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6992,7 +7279,7 @@ RectTransform:
   - {fileID: 1555284388}
   - {fileID: 1487394774}
   - {fileID: 84366952}
-  m_Father: {fileID: 337559141}
+  m_Father: {fileID: 955572012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7096,8 +7383,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.443, y: 0.100000024}
-  m_SizeDelta: {x: -1.1600001, y: 0.54}
+  m_AnchoredPosition: {x: 0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1078132950
 GameObject:
@@ -7131,11 +7418,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1638245757}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.000000059604645, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1078132952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7183,12 +7470,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -7219,7 +7506,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7267,8 +7554,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.443, y: 0.100000024}
-  m_SizeDelta: {x: -1.1600001, y: 0.54}
+  m_AnchoredPosition: {x: 0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1099734281
 GameObject:
@@ -7352,7 +7639,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1099734284}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1185959137}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: UpgradeTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1099734284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7476,6 +7775,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1143828976}
   - component: {fileID: 1143828977}
+  - component: {fileID: 1143828978}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -7492,11 +7792,12 @@ Transform:
   m_GameObject: {fileID: 1143828975}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.78, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 20595142}
+  - {fileID: 839201838}
   m_Father: {fileID: 1185959136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1143828977
@@ -7551,6 +7852,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1143828978
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143828975}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a01163826bac46439bf5c6ff7334211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1160407952
 GameObject:
   m_ObjectHideFlags: 0
@@ -7623,7 +7945,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1162891355
 MonoBehaviour:
@@ -7672,12 +7994,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -7757,7 +8079,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1176158488
 MonoBehaviour:
@@ -7806,12 +8128,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -7934,11 +8256,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1180666092}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 337559142}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: BuyStand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1180666092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7986,6 +8320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1185959136}
+  - component: {fileID: 1185959137}
   m_Layer: 0
   m_Name: Shaved Ice Stand
   m_TagString: Untagged
@@ -8002,14 +8337,53 @@ Transform:
   m_GameObject: {fileID: 1185959135}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.61, y: 0.25, z: 0}
+  m_LocalPosition: {x: 6.43, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1143828976}
-  - {fileID: 839201838}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1185959137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185959135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caab459a35ab144eeb56ea05d8d4ab6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 121694466}
+  standName: Shaved Ice
+  profitCost: 0
+  initialProfit: 1.1
+  initialProfitCost: 2
+  profitGrowthRate: 1.13
+  profitButton: {fileID: 421884345}
+  profitCostText: {fileID: 1578877635}
+  maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
+  maxColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  profitText: {fileID: 1319071210}
+  profitLevel: 1
+  maxProfitLevel: 25
+  initialTime: 10
+  slider: {fileID: 996583600}
+  timeText: {fileID: 445830265}
+  timeLevel: 1
+  maxTimeLevel: 25
+  timeButton: {fileID: 1099734283}
+  timeCostText: {fileID: 110741277}
+  initialTimeCost: 2.5
+  timeGrowthRate: 1.16
+  UIDisplay: {fileID: 839201837}
+  food: {fileID: 20595141}
+  buyButton: {fileID: 599692581}
+  buyText: {fileID: 421285419}
+  buyCost: 3.4
+  animator: {fileID: 1143828978}
 --- !u!1 &1186014919
 GameObject:
   m_ObjectHideFlags: 0
@@ -8204,7 +8578,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1236665422
 MonoBehaviour:
@@ -8253,12 +8627,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -8514,6 +8888,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1285945359}
+  - component: {fileID: 1285945360}
   m_Layer: 0
   m_Name: Butter Mochi Stand
   m_TagString: Untagged
@@ -8535,9 +8910,48 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 159885785}
-  - {fileID: 1640948879}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1285945360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285945358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caab459a35ab144eeb56ea05d8d4ab6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 925918643}
+  standName: Butter Mochi
+  profitCost: 0
+  initialProfit: 69
+  initialProfitCost: 250
+  profitGrowthRate: 1.22
+  profitButton: {fileID: 1936073972}
+  profitCostText: {fileID: 1694934315}
+  maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
+  maxColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  profitText: {fileID: 1784127480}
+  profitLevel: 1
+  maxProfitLevel: 25
+  initialTime: 25
+  slider: {fileID: 1553349423}
+  timeText: {fileID: 1640676814}
+  timeLevel: 1
+  maxTimeLevel: 25
+  timeButton: {fileID: 770374161}
+  timeCostText: {fileID: 1580306932}
+  initialTimeCost: 267.5
+  timeGrowthRate: 1.25
+  UIDisplay: {fileID: 1640948878}
+  food: {fileID: 884958090}
+  buyButton: {fileID: 389843815}
+  buyText: {fileID: 1588401728}
+  buyCost: 420
+  animator: {fileID: 159885787}
 --- !u!1 &1292801569
 GameObject:
   m_ObjectHideFlags: 0
@@ -8670,8 +9084,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.443, y: 0.100000024}
-  m_SizeDelta: {x: -1.1600001, y: 0.54}
+  m_AnchoredPosition: {x: 0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1300225083
 GameObject:
@@ -8789,11 +9203,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1397943229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000000059604645, y: -0.000000029802322}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1319071210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8841,12 +9255,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -8877,7 +9291,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -9165,11 +9579,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1381574311}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2011291762}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: BuyStand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1381574311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9290,7 +9716,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1385387752}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2011291762}
+        m_TargetAssemblyTypeName: Stand, Assembly-CSharp
+        m_MethodName: UpgradeProfit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1385387752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9461,8 +9899,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.336, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1415748688
 GameObject:
@@ -9683,6 +10121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1487129960}
   - component: {fileID: 1487129961}
+  - component: {fileID: 1487129962}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -9699,11 +10138,12 @@ Transform:
   m_GameObject: {fileID: 1487129959}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.021, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1837435648}
+  - {fileID: 711026316}
   m_Father: {fileID: 201943173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1487129961
@@ -9758,6 +10198,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1487129962
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487129959}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a01163826bac46439bf5c6ff7334211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1487394773
 GameObject:
   m_ObjectHideFlags: 0
@@ -9792,8 +10253,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.443, y: 0.100000024}
-  m_SizeDelta: {x: -1.1600001, y: 0.54}
+  m_AnchoredPosition: {x: 0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1501845731
 GameObject:
@@ -9963,7 +10424,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1539975635
 MonoBehaviour:
@@ -10012,12 +10473,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10194,8 +10655,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.336, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1562962414
 GameObject:
@@ -10284,9 +10745,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 40
+  m_fontSizeMax: 55
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10366,7 +10827,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1578877635
 MonoBehaviour:
@@ -10415,12 +10876,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10500,7 +10961,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1580306932
 MonoBehaviour:
@@ -10549,12 +11010,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10761,9 +11222,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 40
+  m_fontSizeMax: 55
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10840,11 +11301,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1094344213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1620254975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10865,7 +11326,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0s
+  m_text: 0.00s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
   m_sharedMaterial: {fileID: -1415788517794090526, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
@@ -10892,12 +11353,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -10928,7 +11389,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -11051,8 +11512,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.336, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1640676812
 GameObject:
@@ -11086,11 +11547,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 125145959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1640676814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11111,7 +11572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0s
+  m_text: 0.00s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
   m_sharedMaterial: {fileID: -1415788517794090526, guid: 7ee52e3009d8f4dc28a705eb76385d42, type: 2}
@@ -11138,12 +11599,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -11174,7 +11635,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -11214,7 +11675,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1640948878}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11223,7 +11684,7 @@ RectTransform:
   - {fileID: 485829611}
   - {fileID: 125145959}
   - {fileID: 1553349422}
-  m_Father: {fileID: 1285945359}
+  m_Father: {fileID: 159885785}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11327,8 +11788,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.336, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.4, y: 0.100000024}
+  m_SizeDelta: {x: -1.2, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &1686025203
 GameObject:
@@ -11440,7 +11901,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1694934315
 MonoBehaviour:
@@ -11489,12 +11950,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -11571,11 +12032,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1555284388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.000000059604645, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1739331274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11623,12 +12084,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -11659,7 +12120,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -11789,11 +12250,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 485829611}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000000059604645, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1784127480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11841,12 +12302,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -11877,7 +12338,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -12048,7 +12509,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1796452675}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 201943174}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: UpgradeTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1796452675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12455,9 +12928,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 40
+  m_fontSizeMax: 55
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -13055,7 +13528,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1936073973}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1285945360}
+        m_TargetAssemblyTypeName: Stand, Assembly-CSharp
+        m_MethodName: UpgradeProfit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1936073973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13262,7 +13747,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1955428212
 MonoBehaviour:
@@ -13311,12 +13796,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 48
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 40
-  m_fontSizeMax: 50
+  m_fontSizeMin: 35
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -13439,11 +13924,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1982416401}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 44254458}
+        m_TargetAssemblyTypeName: FoodStand, Assembly-CSharp
+        m_MethodName: BuyStand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1982416401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13514,11 +14011,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1660464866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.17500003, y: 0}
-  m_SizeDelta: {x: -0.35, y: 0.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.00000017881393, y: -0.00000014901161}
+  m_SizeDelta: {x: 0.45, y: 0}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1996670981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13566,12 +14063,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.25
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.13
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -13602,7 +14099,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -13700,12 +14197,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.3
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 0.2
-  m_fontSizeMax: 0.4
+  m_fontSizeMin: 0.15
+  m_fontSizeMax: 2.5
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -13736,7 +14233,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0.30440205, z: 0, w: 0.29806027}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -13843,6 +14340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2011291761}
+  - component: {fileID: 2011291762}
   m_Layer: 0
   m_Name: Malasadas Stand
   m_TagString: Untagged
@@ -13864,9 +14362,48 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 437314207}
-  - {fileID: 901841936}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2011291762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011291760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caab459a35ab144eeb56ea05d8d4ab6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 1415748690}
+  standName: Malasadas
+  profitCost: 0
+  initialProfit: 800
+  initialProfitCost: 3000
+  profitGrowthRate: 1.25
+  profitButton: {fileID: 1385387751}
+  profitCostText: {fileID: 690700389}
+  maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
+  maxColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  profitText: {fileID: 1996670981}
+  profitLevel: 1
+  maxProfitLevel: 25
+  initialTime: 30
+  slider: {fileID: 405030014}
+  timeText: {fileID: 303211797}
+  timeLevel: 1
+  maxTimeLevel: 25
+  timeButton: {fileID: 894818999}
+  timeCostText: {fileID: 216230336}
+  initialTimeCost: 3500.25
+  timeGrowthRate: 1.28
+  UIDisplay: {fileID: 901841935}
+  food: {fileID: 1347266828}
+  buyButton: {fileID: 1381574310}
+  buyText: {fileID: 254328516}
+  buyCost: 5500
+  animator: {fileID: 437314209}
 --- !u!1 &2026342660
 GameObject:
   m_ObjectHideFlags: 0
@@ -13954,9 +14491,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 40
+  m_fontSizeMax: 55
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -14035,8 +14572,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.257, y: 0.100000024}
-  m_SizeDelta: {x: -1.1500001, y: 0.54}
+  m_AnchoredPosition: {x: -0.35000002, y: 0.100000024}
+  m_SizeDelta: {x: -1.1, y: 0.54}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &2138205508
 GameObject:

@@ -52,15 +52,16 @@ public class Stand : MonoBehaviour
     }
 
     // Method to upgrade profit
-    public void UpgradeProfit()
+    protected virtual void UpgradeProfit()
     {
         // Only upgrade if the max level hasn't been reached
         if(profitLevel < maxProfitLevel)
         {
-            // Upgrade profit
             Funds.UpdateFunds(-profitCost);
+
+            // Upgrade profit
             profitLevel++;
-            SetProfit(initialProfit * profitLevel);
+            SetProfit(initialProfit * profitLevel * 5);
             DisplayText();
 
             // Show that the max level has been reached

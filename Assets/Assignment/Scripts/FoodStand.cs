@@ -19,6 +19,14 @@ public class FoodStand : Stand
     public TextMeshProUGUI timeCostText;
     public float initialTimeCost, timeGrowthRate;
 
+    // Variables for buying the stand
+    public GameObject UIDisplay, food;
+    public Button buyButton;
+    public TextMeshProUGUI buyText;
+    public float buyCost;
+    bool bought = false;
+    public Animator animator;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -29,7 +37,12 @@ public class FoodStand : Stand
         SetTime(initialTime);
         SetTimeCost(initialTimeCost);
         DisplayCost(timeCost, timeCostText);
-        StartGenerating();
+
+        // Don't display stand info until the stand is bought
+        DisplayStand(false);
+
+        // Display the buy cost
+        buyText.text = "BUY: " + string.Format("{0:C}", buyCost);
     }
 
     // Method to start the coroutine for generating profit
@@ -80,8 +93,9 @@ public class FoodStand : Stand
         // Only upgrade if the max level hasn't been reached
         if(timeLevel < maxTimeLevel)
         {
-            // Upgrade time
             Funds.UpdateFunds(-timeCost);
+
+            // Upgrade time
             timeLevel++;
             SetTime(time -= initialTime / maxTimeLevel);
             DisplayText();
@@ -100,16 +114,54 @@ public class FoodStand : Stand
     // Override the main update
     protected override void Update()
     {
-        base.Update();
+        // Check to disable the buy button if not bought
+        // If bought then check to disable the upgrade buttons instead
+        if(bought)
+        {
+            base.Update();
 
-        // Disable the button to upgrade time if funds are lacking
-        if (Funds.TotalFunds < timeCost && timeLevel != maxTimeLevel) timeButton.interactable = false;
-        else timeButton.interactable = true;
+            // Disable the button to upgrade time if funds are lacking
+            if (Funds.TotalFunds < timeCost && timeLevel != maxTimeLevel) timeButton.interactable = false;
+            else timeButton.interactable = true;
+        }
+        else
+        {
+            // Disable the buy button if funds are lacking
+            if (Funds.TotalFunds < buyCost) buyButton.interactable = false;
+            else buyButton.interactable = true;
+        }
     }
 
     // Method to set the cost of time upgrading time
     private void SetTimeCost(float value)
     {
         timeCost = value;
+    }
+
+    // Method to display the stand and buttons
+    public void DisplayStand(bool display)
+    {
+        UIDisplay.SetActive(display);
+        food.SetActive(display);
+        profitButton.gameObject.SetActive(display);
+        timeButton.gameObject.SetActive(display);
+    }
+
+    // Method to buy the stand
+    public void BuyStand()
+    {
+        Funds.UpdateFunds(-buyCost);
+        bought = true;
+
+        // Display the stand
+        buyButton.gameObject.SetActive(false);
+        DisplayStand(true);
+        DisplayText();
+
+        // Play the buy animation
+        animator.SetTrigger("Buy");
+
+        // Start generating profit
+        StartGenerating();
     }
 }
