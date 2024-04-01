@@ -9,12 +9,14 @@ public class WorkerStand : Stand
     // Start is called before the first frame update
     void Start()
     {
+        SetProfit(initialProfit);
+        SetCost(initialCost);
+        DisplayCost();
         DisplayText();
     }
 
     private void OnMouseDown()
     {
-        Debug.Log("clicked");
         animator.SetTrigger("Clicked");
         AddFunds();
     }

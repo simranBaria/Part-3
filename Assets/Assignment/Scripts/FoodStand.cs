@@ -6,16 +6,21 @@ using TMPro;
 
 public class FoodStand : Stand
 {
-    public float time;
+    float time;
+    public float initialTime;
     float countdown;
     public Slider slider;
     public TextMeshProUGUI timeText;
+    public int timeLevel = 1, maxLevel = 25;
 
     // Start is called before the first frame update
     void Start()
     {
-        SetTime(time);
+        SetProfit(initialProfit);
+        SetTime(initialTime);
+        SetCost(initialCost);
         DisplayText();
+        DisplayCost();
         StartGenerating();
     }
 
@@ -45,7 +50,7 @@ public class FoodStand : Stand
     protected override void DisplayText()
     {
         base.DisplayText();
-        timeText.text = time + "s";
+        timeText.text = string.Format("{0:F}", time) + "s";
     }
 
     // Method to set the time the stand takes to generate profit
@@ -53,5 +58,15 @@ public class FoodStand : Stand
     {
         time = value;
         slider.maxValue = time;
+    }
+
+    public void UpgradeTime()
+    {
+        if(timeLevel < maxLevel)
+        {
+            timeLevel++;
+            SetTime(time -= initialTime / maxLevel);
+            DisplayText();
+        }
     }
 }
