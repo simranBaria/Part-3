@@ -332,20 +332,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caab459a35ab144eeb56ea05d8d4ab6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialProfit: 3
-  growthRate: 1.14
-  initialCost: 5
   nameText: {fileID: 516001524}
-  profitText: {fileID: 776334292}
-  profitCostText: {fileID: 1176158488}
   standName: Spam Musubi
-  profitLevel: 1
+  initialProfit: 3
+  initialProfitCost: 5
+  profitGrowthRate: 1.14
   profitButton: {fileID: 1904579880}
+  profitCostText: {fileID: 1176158488}
+  maxButtonSprite: {fileID: 21300000, guid: 9918666f392b54cdbb6fa2ca308e1f9a, type: 3}
+  maxColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  profitText: {fileID: 776334292}
+  profitLevel: 1
+  maxProfitLevel: 25
   initialTime: 5
   slider: {fileID: 1292801571}
   timeText: {fileID: 162399497}
   timeLevel: 1
-  maxLevel: 25
+  maxTimeLevel: 25
+  timeButton: {fileID: 1946201834}
+  timeCostText: {fileID: 1955428212}
+  initialTimeCost: 7
+  timeGrowthRate: 1.28
 --- !u!1 &56733746
 GameObject:
   m_ObjectHideFlags: 0
@@ -6475,15 +6482,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b88f463b5a34f2d86f658eeebbc841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialProfit: 1
-  growthRate: 1.07
-  initialCost: 1
   nameText: {fileID: 1261963927}
-  profitText: {fileID: 1997858273}
-  profitCostText: {fileID: 261254660}
   standName: Popoki Cafe
-  profitLevel: 1
+  initialProfit: 1
+  initialProfitCost: 1
+  profitGrowthRate: 1.07
   profitButton: {fileID: 1501845733}
+  profitCostText: {fileID: 261254660}
+  maxButtonSprite: {fileID: 21300000, guid: b2e59614de05a4b0abeeabe8840642e4, type: 3}
+  maxColour: {r: 0.7137255, g: 0.45098042, b: 0.28627452, a: 1}
+  profitText: {fileID: 1997858273}
+  profitLevel: 1
+  maxProfitLevel: 25
   animator: {fileID: 979098342}
 --- !u!50 &979098340
 Rigidbody2D:

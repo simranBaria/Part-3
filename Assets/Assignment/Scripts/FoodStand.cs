@@ -6,21 +6,29 @@ using TMPro;
 
 public class FoodStand : Stand
 {
-    float time;
+    // Variables for the countdown
+    float time, countdown;
     public float initialTime;
-    float countdown;
     public Slider slider;
+
+    // Variables for upgrading time
+    float timeCost;
     public TextMeshProUGUI timeText;
-    public int timeLevel = 1, maxLevel = 25;
+    public int timeLevel = 1, maxTimeLevel = 25;
+    public Button timeButton;
+    public TextMeshProUGUI timeCostText;
+    public float initialTimeCost, timeGrowthRate;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        SetProfit(initialProfit);
+        // Call the base to set and display the profit
+        base.Start();
+
+        // Set and display the time
         SetTime(initialTime);
-        SetCost(initialCost);
-        DisplayText();
-        DisplayCost();
+        SetTimeCost(initialTimeCost);
+        DisplayCost(timeCost, timeCostText);
         StartGenerating();
     }
 
@@ -47,9 +55,13 @@ public class FoodStand : Stand
         StartGenerating();
     }
 
+    // Method to display text on the stand
     protected override void DisplayText()
     {
+        // Call the base to display the profit text as well
         base.DisplayText();
+
+        // Display the time
         timeText.text = string.Format("{0:F}", time) + "s";
     }
 
@@ -57,16 +69,47 @@ public class FoodStand : Stand
     public void SetTime(float value)
     {
         time = value;
+
+        // Set the timer to reflect the amount of time
         slider.maxValue = time;
     }
 
+    // Method to upgrade time
     public void UpgradeTime()
     {
-        if(timeLevel < maxLevel)
+        // Only upgrade if the max level hasn't been reached
+        if(timeLevel < maxTimeLevel)
         {
+            // Upgrade time
+            Funds.UpdateFunds(-timeCost);
             timeLevel++;
-            SetTime(time -= initialTime / maxLevel);
+            SetTime(time -= initialTime / maxTimeLevel);
             DisplayText();
+
+            // Show that the max level has been reached
+            if (timeLevel == maxTimeLevel) ChangeButton(timeCostText, timeButton);
+            else
+            {
+                // Set the cost of the next upgrade
+                SetTimeCost(CalculateNextCost(timeLevel, timeGrowthRate, initialTimeCost));
+                DisplayCost(timeCost, timeCostText);
+            }
         }
+    }
+
+    // Override the main update
+    protected override void Update()
+    {
+        base.Update();
+
+        // Disable the button to upgrade time if funds are lacking
+        if (Funds.TotalFunds < timeCost && timeLevel != maxTimeLevel) timeButton.interactable = false;
+        else timeButton.interactable = true;
+    }
+
+    // Method to set the cost of time upgrading time
+    private void SetTimeCost(float value)
+    {
+        timeCost = value;
     }
 }

@@ -5,13 +5,15 @@ using TMPro;
 
 public class Funds : MonoBehaviour
 {
-    public TextMeshProUGUI display;
     public static float TotalFunds { get; private set; }
-    static string fundsText = "000,000.000";
     public static Funds Instance;
+
+    public TextMeshProUGUI display;
+    static string fundsText = "000,000.000";
 
     private void Start()
     {
+        // Initialize
         TotalFunds = 0;
         Instance = this;
     }

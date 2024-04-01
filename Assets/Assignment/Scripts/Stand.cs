@@ -6,12 +6,31 @@ using UnityEngine.UI;
 
 public class Stand : MonoBehaviour
 {
-    float profit, profitCost;
-    public float initialProfit, growthRate, initialCost;
-    public TextMeshProUGUI nameText, profitText, profitCostText;
+    // Name display
+    public TextMeshProUGUI nameText;
     public string standName;
-    public int profitLevel = 1;
+
+    // Variables for calculating and displaying the cost of upgrades
+    public float profitCost;
+    public float initialProfit, initialProfitCost, profitGrowthRate;
     public Button profitButton;
+    public TextMeshProUGUI profitCostText;
+    public Sprite maxButtonSprite;
+    public Color maxColour;
+
+    // Variables for upgrading profit
+    public TextMeshProUGUI profitText;
+    float profit;
+    public int profitLevel = 1, maxProfitLevel = 25;
+
+    protected virtual void Start()
+    {
+        // Set and display the profit
+        SetProfit(initialProfit);
+        SetProfitCost(initialProfitCost);
+        DisplayCost(profitCost, profitCostText);
+        DisplayText();
+    }
 
     // Method to add funds to the funds class
     public void AddFunds()
@@ -35,32 +54,56 @@ public class Stand : MonoBehaviour
     // Method to upgrade profit
     public void UpgradeProfit()
     {
-        Funds.UpdateFunds(-profitCost);
-        profitLevel++;
-        SetProfit(initialProfit * profitLevel);
-        DisplayText();
-        CalculateNextCost();
+        // Only upgrade if the max level hasn't been reached
+        if(profitLevel < maxProfitLevel)
+        {
+            // Upgrade profit
+            Funds.UpdateFunds(-profitCost);
+            profitLevel++;
+            SetProfit(initialProfit * profitLevel);
+            DisplayText();
+
+            // Show that the max level has been reached
+            if(profitLevel == maxProfitLevel) ChangeButton(profitCostText, profitButton);
+            else
+            {
+                // Set the cost of the next upgrade
+                SetProfitCost(CalculateNextCost(profitLevel, profitGrowthRate, initialProfitCost));
+                DisplayCost(profitCost, profitCostText);
+            }
+        }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        if (Funds.TotalFunds < profitCost) profitButton.interactable = false;
+        // Disable the button if funds are lacking
+        if (Funds.TotalFunds < profitCost && profitLevel != maxProfitLevel) profitButton.interactable = false;
         else profitButton.interactable = true;
     }
 
-    public void SetCost(float value)
+    // Method to set the cost of the profit upgrade
+    public void SetProfitCost(float value)
     {
         profitCost = value;
     }
 
-    public void CalculateNextCost()
+    // Method to calculate the cost of an upgrade
+    public float CalculateNextCost(float level, float growthRate, float initialCost)
     {
-        profitCost = initialCost * Mathf.Pow(growthRate, profitLevel);
-        DisplayCost();
+        return initialCost * Mathf.Pow(growthRate, level);
     }
 
-    public void DisplayCost()
+    // Method to display the cost of an upgrade
+    public void DisplayCost(float cost, TextMeshProUGUI textDisplay)
     {
-        profitCostText.text = string.Format("{0:C}", profitCost);
+        textDisplay.text = string.Format("{0:C}", cost);
+    }
+
+    // Method to change a button
+    public void ChangeButton(TextMeshProUGUI textDisplay, Button button)
+    {
+        textDisplay.text = "MAX";
+        textDisplay.color = maxColour;
+        button.image.sprite = maxButtonSprite;
     }
 }
