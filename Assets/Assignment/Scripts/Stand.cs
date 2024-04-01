@@ -23,6 +23,9 @@ public class Stand : MonoBehaviour
     float profit;
     public int profitLevel = 1, maxProfitLevel = 25;
 
+    // Popup
+    public Popup popup;
+
     protected virtual void Start()
     {
         // Set and display the profit
@@ -36,6 +39,7 @@ public class Stand : MonoBehaviour
     public void AddFunds()
     {
         Funds.UpdateFunds(profit);
+        DisplayPopup();
     }
 
     // Method to set the amount of profit the stand makes
@@ -106,5 +110,13 @@ public class Stand : MonoBehaviour
         textDisplay.text = "MAX";
         textDisplay.color = maxColour;
         button.image.sprite = maxButtonSprite;
+    }
+
+    // Method to display the pop up for how much money was made
+    public void DisplayPopup()
+    {
+        popup.position = new Vector2(transform.position.x + 1.15f, transform.position.y + 1.5f);
+        popup.text = "+" + string.Format("{0:C}", profit);
+        Instantiate(popup);
     }
 }
