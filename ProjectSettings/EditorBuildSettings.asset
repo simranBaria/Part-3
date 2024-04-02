@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Assignment/Scenes/Start.unity
+    guid: 52797b7f09d8d457b8bd7b114c36c38a
+  - enabled: 1
+    path: Assets/Assignment/Scenes/Popoki Cafe.unity
+    guid: b7a32bde7f85641dfa042c080d06f169
+  - enabled: 1
+    path: Assets/Assignment/Scenes/End.unity
+    guid: 162cc63c931ac426998867a13e79cb9f
   m_configObjects: {}
