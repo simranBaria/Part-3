@@ -13,7 +13,7 @@ public class Funds : MonoBehaviour
     static string fundsText = "000,000.000";
 
     // Variables for displaying that the goal was met
-    public Color boxColour, textColour;
+    public Color boxColour, defaultTextColour, winTextColour;
     Image box;
     bool goalMet = false;
 
@@ -21,6 +21,7 @@ public class Funds : MonoBehaviour
     {
         // Initialize
         TotalFunds = 0;
+        box = GetComponent<Image>();
         Instance = this;
     }
 
@@ -28,7 +29,8 @@ public class Funds : MonoBehaviour
     public static void UpdateFunds(float value)
     {
         TotalFunds += value;
-        if (TotalFunds >= 100000) Instance.GoalMet();
+        if (!Instance.goalMet && TotalFunds >= 100000) Instance.GoalMet();
+        else if (Instance.goalMet && TotalFunds < 100000) Instance.GoalNotMet();
         UpdateText();
     }
 
@@ -50,10 +52,16 @@ public class Funds : MonoBehaviour
     // Method to display the goal being met
     public void GoalMet()
     {
-        box = GetComponent<Image>();
         box.color = boxColour;
-        display.color = textColour;
+        display.color = winTextColour;
         goalMet = true;
+    }
+
+    public void GoalNotMet()
+    {
+        box.color = Color.white;
+        display.color = defaultTextColour;
+        goalMet = false;
     }
 
     // Method to send the player to the win screen

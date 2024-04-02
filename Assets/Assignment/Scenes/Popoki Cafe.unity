@@ -14854,7 +14854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   display: {fileID: 859806663}
   boxColour: {r: 0.6462264, g: 1, b: 0.65222317, a: 1}
-  textColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
+  defaultTextColour: {r: 0.63529414, g: 0.5019608, b: 0.6156863, a: 1}
+  winTextColour: {r: 0.65882355, g: 0.40784317, b: 0.23137257, a: 1}
 --- !u!114 &2138205513
 MonoBehaviour:
   m_ObjectHideFlags: 0
